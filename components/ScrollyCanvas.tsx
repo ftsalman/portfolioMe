@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import LoadingScreen from "./LoadingScreen";
 
 export default function ScrollyCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [loadProgress, setLoadProgress] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const imagesRef = useRef<HTMLImageElement[]>([]);
 
@@ -16,32 +18,34 @@ export default function ScrollyCanvas() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
+    offset: ["start start", "end end"],
   });
 
   const frameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1]);
 
-  // Preload images
+  // Preload images with per-frame progress tracking
   useEffect(() => {
-    const preload = async () => {
-      const promises = Array.from({ length: frameCount }, (_, i) => {
-        return new Promise<HTMLImageElement>((resolve, reject) => {
-          const img = new Image();
-          img.src = currentFrame(i);
-          img.onload = () => resolve(img);
-          img.onerror = reject;
-        });
+    let loaded = 0;
+
+    const promises = Array.from({ length: frameCount }, (_, i) => {
+      return new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image();
+        img.src = currentFrame(i);
+        img.onload = () => {
+          loaded += 1;
+          setLoadProgress(Math.round((loaded / frameCount) * 100));
+          resolve(img);
+        };
+        img.onerror = reject;
       });
+    });
 
-      try {
-        imagesRef.current = await Promise.all(promises);
+    Promise.all(promises)
+      .then((imgs) => {
+        imagesRef.current = imgs;
         setImagesLoaded(true);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    preload();
+      })
+      .catch((err) => console.error("Image preload error:", err));
   }, []);
 
   const drawImage = (index: number) => {
@@ -86,7 +90,6 @@ export default function ScrollyCanvas() {
 
   useMotionValueEvent(frameIndex, "change", (latest) => {
     if (!imagesLoaded) return;
-
     const index = Math.round(latest);
     requestAnimationFrame(() => drawImage(index));
   });
@@ -106,16 +109,14 @@ export default function ScrollyCanvas() {
   }, [imagesLoaded, frameIndex]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[500vh]">
-      <div className="sticky top-0 w-full h-screen overflow-hidden bg-black">
-        <canvas ref={canvasRef} className="w-full h-full block" />
+    <>
+      <LoadingScreen progress={loadProgress} />
 
-        {!imagesLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-            Loading experience...
-          </div>
-        )}
+      <div ref={containerRef} className="relative w-full h-[500vh]">
+        <div className="sticky top-0 w-full h-screen overflow-hidden bg-black">
+          <canvas ref={canvasRef} className="w-full h-full block" />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
