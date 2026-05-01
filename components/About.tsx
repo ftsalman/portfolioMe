@@ -23,7 +23,7 @@ export default function About() {
             {/* Replace the src with your actual portrait image path, e.g., /portrait.jpg */}
             <div className="w-full lg:w-[45%] aspect-[4/5] relative rounded-3xl overflow-hidden bg-zinc-900 border border-white/5">
               <Image
-                src="/imgs/Gemini.png"
+                src="/imgs/me.png"
                 alt="Salman Faris"
                 fill
                 sizes="(max-width: 1024px) 100vw, 45vw"

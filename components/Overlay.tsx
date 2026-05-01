@@ -47,7 +47,7 @@ export default function Overlay() {
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-foreground mb-4 drop-shadow-2xl">
             Salmaan
           </h1>
-          <p className="text-lg md:text-2xl text-subtle font-medium tracking-[0.2em] uppercase">
+          <p className="text-lg md:text-2xl text-subtle font-medium tracking-[0.2em] z-10 uppercase">
             MERN Stack Developer
           </p>
 
