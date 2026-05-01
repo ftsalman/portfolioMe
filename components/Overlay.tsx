@@ -50,6 +50,8 @@ export default function Overlay() {
           <p className="text-lg md:text-2xl text-subtle font-medium tracking-[0.2em] uppercase">
             MERN Stack Developer
           </p>
+
+          <small>Palakkad,Kerala,India</small>
         </motion.div>
 
         {/* Section 2: Left (30% scroll) */}
