@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -21,14 +22,12 @@ export default function About() {
             {/* Left side: Portrait Image */}
             {/* Replace the src with your actual portrait image path, e.g., /portrait.jpg */}
             <div className="w-full lg:w-[45%] aspect-[4/5] relative rounded-3xl overflow-hidden bg-zinc-900 border border-white/5">
-              <img 
-                src="/imgs/Gemini.png" 
-                alt="Salman Faris" 
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  // Fallback if image is missing
-                  (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100"><rect width="100%" height="100%" fill="%231a1a1a" /><text x="50%" y="50%" fill="%23333" font-family="sans-serif" font-size="5" text-anchor="middle" dy=".3em">Place /public/portrait.jpg here</text></svg>';
-                }}
+              <Image
+                src="/imgs/Gemini.png"
+                alt="Salman Faris"
+                fill
+                className="object-cover"
+                priority
               />
             </div>
 

@@ -18,7 +18,7 @@ export default function Cta() {
 
           <div className="relative z-10">
             <span className="text-zinc-500 text-xs font-bold tracking-[0.25em] uppercase mb-6 block">
-              Let's Connect
+              Let&apos;s Connect
             </span>
             <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-10 tracking-tight max-w-4xl mx-auto">
               Need a MERN developer for your next product?
