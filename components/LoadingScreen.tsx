@@ -66,7 +66,7 @@ export default function LoadingScreen({ progress }: LoadingScreenProps) {
                 Portfolio
               </p>
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
-                Salman Faris
+                Salmaan Faris
               </h1>
               <p className="text-xs text-zinc-600 mt-2 tracking-widest uppercase">
                 MERN Stack Developer
